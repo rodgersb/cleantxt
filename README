@@ -114,28 +114,28 @@ single invocation.
 
 * To convert all line-endings in a text file to UNIX-style LF (ASCII 10):
 
-    $ cleantxt -l myfile1.txt myfile2.txt myfile3.txt ...
+    $ cleantxt -l myfile.txt
 
   Note the `-l' is assumed by default if CleanTxt was built on a
   UNIX-like system.
 
 * To convert all line-endings to DOS/MS-Windows style CR+LF (ASCII 13+10):
 
-    $ cleantxt -c myfile1.txt myfile2.txt myfile3.txt ...
+    $ cleantxt -c myfile.txt
 
   Note the `-c' is assumed by default if CleanTxt was built on MS-DOS or
   Microsoft Windows.
 
 * To expand all hard-tab characters (ASCII 9) into spaces (A
 
-    $ cleantxt -s -t8 source1.c source2.c source3.c ...
+    $ cleantxt -s -t8 source.c
 
   The -s option is implied by default. The -t8 specifies the interval of
   the tab stops; 8 is the default value, but any size can be used.
 
 * To collapse spaces into hard-tab characters wherever possible:
 
-    $ cleantxt -r -t8 source1.c source2.c source3.c ...
+    $ cleantxt -r -t8 source.c
 
 If CleanTxt is invoked without any files given on the command line, it
 acts like a UNIX-style filter program, reading from standard input and
