@@ -26,4 +26,10 @@ missing
 Makefile.in
 mkinstalldirs
 stamp-h.in
+.deps
+Makefile
+config.h
+config.log
+config.status
+stamp-h
 
