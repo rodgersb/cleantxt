@@ -109,8 +109,7 @@ man page, and a brief summary is available through typing
 
     $ cleantxt --help
 
-Some brief examples. Note that all these options can be combined into a
-single invocation.
+Some brief examples:
 
 * To convert all line-endings in a text file to UNIX-style LF (ASCII 10):
 
