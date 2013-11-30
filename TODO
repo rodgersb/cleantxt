@@ -1,0 +1,22 @@
+List of features / ideas slated for future CleanTxt releases
+============================================================
+
+Immediate / short term goals
+----------------------------
+
+* Implement proper support for 16-bit Unicode, and properly account for
+  multi-byte UTF-8 characters. This would be selectable through command
+  line options, and can also allow conversion between 16-bit Unicode and
+  plain 7-bit ASCII (since some Microsoft Windows installations of
+  Notepad seem to default to 16-bit Unicode now, which can be
+  frustrating if you use another platform that is not configured to
+  handle these files).
+
+* As with the GNU textutils "expand" program, allow arbitrary tab stops
+  to be specified (user gives a comma-separated list of column numbers
+  as a command-line argument).
+
+* Write a minimal replacement stub for Check (the unit-testing suite,
+  http://check.sourceforge.net) so I can run the unit tests on DJGPP.
+  Currently the unit testing suite can only be run via GNU Autotools on
+  Linux.

@@ -1,0 +1,350 @@
+<!--cleantxt: Cleans up tab, space and end-of-line formatting in text files.
+    Copyright (C) 1999-2013 Bryan Rodgers <rodgersb@it.net.au>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or (at
+    your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>. -->
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN">
+
+<refentry id="cleantxt">
+
+<refmeta>
+    <refentrytitle>cleantxt</refentrytitle>
+    <manvolnum>1</manvolnum>
+</refmeta>
+
+<refnamediv>
+    <refname>cleantxt</refname>
+    <refpurpose>Cleans up tab, space and end-of-line formatting in text files.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+    <cmdsynopsis>
+        <command>cleantxt</command>
+        <group choice="opt">
+            <arg choice="plain"
+            rep="repeat"><replaceable>option</replaceable></arg>
+        </group>
+        <arg rep="repeat" choice="plain"><replaceable>file</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+        <command>cleantxt</command>
+        <group choice="opt">
+            <arg choice="plain"
+            rep="repeat"><replaceable>option</replaceable></arg>
+        </group>
+        <arg choice="req">-o <replaceable>outfile</replaceable></arg>
+        <arg choice="plain"><replaceable>infile</replaceable></arg>
+    </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title>DESCRIPTION</title>
+
+<para>The <command>cleantxt</command> utility filters text files/streams
+and is capable of performing the following transformations:</para>
+
+<itemizedlist>
+
+<listitem><para>Expanding tab characters (ASCII 9) into the equivalent
+number of spaces (ASCII 32); or alternatively collapsing consecutive
+spaces into tab characters where possible. Useful when transitioning
+between source code formatting standards.</para></listitem>
+
+<listitem><para>Converting the end-of-line sequence between LF (ASCII
+10), CR+LF (ASCII 13+10) or CR (ASCII 13), easing text file portability
+between Unix-like operating systems (including Linux and Apple Mac OS
+X), MS-DOS/Microsoft Windows and classic (pre-2001) Apple Mac OS
+respectively.</para></listitem>
+
+<listitem><para>Automatically trimming excess trailing whitespace off
+the end of each line, and condensing multiple trailing blank lines
+beyond the last non-whitespace character in the file, producing minor
+space savings and reducing the amount of noise in the output of
+<command>diff</command>-like programs.</para></listitem>
+
+<listitem><para>Ensuring that the last line in the file ends with a
+newline sequence. This avoids problems with many UNIX utilities; some
+programs even silently ignore the last line of input if not properly
+terminated with a newline.</para>
+
+<para>Note that ANSI C compilers also issue warnings on source files
+that don't end with a newline sequence, as this may create undesired
+behaviour with the C pre-processor accidentally concatenating distinct
+tokens or source lines from different files.</para></listitem>
+
+<listitem><para>Handling the control-Z character (ASCII 26) that some
+operating systems or applications may interpret as an explicit
+end-of-file marker.</para></listitem>
+
+</itemizedlist>
+
+</refsect1>
+
+<refsect1>
+<title>MODES OF OPERATION</title>
+
+<para>If the first form of invocation listed in the synopsis is used,
+then each file given on the command-line will be processed
+in-place.</para>
+
+<para>If the second form is used, then the original input file will be
+preserved, and output written to a different file.</para>
+
+<para>If no arguments are given, or if a single hyphen
+`<literal>-</literal>' is given as a filename, then input will be read
+from standard input, and filtered output written to standard output,
+much like any other UNIX command-line filter utility.</para>
+
+</refsect1>
+
+<refsect1>
+<title>OPTIONS</title>
+
+<variablelist>
+
+<varlistentry>
+<term><option>-c</option>, <option>--crlf</option></term>
+<listitem><para>Rewrite all end-of-line sequences as CR+LF (ASCII
+13+10). This format is normally used on Microsoft MS-DOS and Windows
+platforms.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-l</option>, <option>--lf</option></term>
+<listitem><para>Rewrite all end-of-line sequences as plain LF (ASCII
+10). This format is normally used on Unix-like systems, including Linux and
+Apple Mac OS X.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-m</option>, <option>--cr</option></term>
+<listitem><para>Rewrite all end-of-line sequences as plain CR (ASCII
+13). This format is typically used on classic Apple Mac OS
+(pre-2001).</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+<option>-o <replaceable>outfile</replaceable></option>,
+<option>--output=<replaceable>outfile</replaceable></option>
+</term>
+<listitem><para>Specifies a separate output file that filtered output
+will be sent to. In this mode of invocation, only one input file can be
+given. Supplying a single hyphen `<literal>-</literal>' means send to
+standard output.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-R</option>, <option>--remove-ctrl-z</option></term>
+<listitem><para>Specifies that all control-Z (ASCII 26) characters
+should be silently discarded from the file. In this mode, such
+characters will also be considered to have zero width with regards to
+computing tab-stops.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-r</option>, <option>--tabs</option></term>
+<listitem><para>Wherever possible, collapse multiple consecutive
+sequences of space characters (ASCII 32) into tab characters (ASCII
+9).</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-s</option>, <option>--spaces</option></term>
+<listitem><para>Always expand tab characters (ASCII 9) into space
+characters (ASCII 32).</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-T <replaceable>gap-width</replaceable></option>,
+<option>--tab-min=<replaceable>gap-width</replaceable></option></term>
+<listitem><para>When collapsing spaces into tabs via the
+<option>-r</option> option, this specifies the minimum horizontal gap
+width between consecutive words on a line where a tab character will
+actually be inserted. When the gap is too small, it will be filled in
+with spaces instead. The default gap width is 2. This option has no
+effect when <option>-s</option> is used.</para> </listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-t <replaceable>tab-size</replaceable></option>,
+<option>--tab-size=<replaceable>tab-size</replaceable></option></term>
+<listitem><para>Specifies the column intervals between tab-stops used
+when expanding or inserting a tab (ASCII 9) character. A tab character
+always advances the column output position on the current line up to the
+next multiple of this value (i.e. the next tab-stop). The default tab
+size is 8.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-Z</option>, <option>--stop-at-ctrl-z</option></term>
+<listitem><para>Stop processing an input file when a control-Z (ASCII
+26) character is encountered. Any content after this character will be
+discarded. Unless the <option>-R</option> option is given, the control-Z
+character will be included in the output.</para></listitem>
+</varlistentry>
+
+<varlistentry> <term><option>-z</option>,
+<option>--add-ctrl-z</option></term> <listitem><para>If one is not
+already present, append a control-Z (ASCII 26) character to the end of
+the file. See the <emphasis>HISTORICAL NOTES</emphasis> section for a
+brief background on the use of the control-Z character.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-h</option>, <option>--help</option></term>
+<listitem><para>Display brief one-screen options summary and
+exit.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-V</option>, <option>--version</option></term>
+<listitem><para>Display program version and exit.</para></listitem>
+</varlistentry>
+
+</variablelist>
+
+</refsect1>
+
+<refsect1>
+<title>CAVEATS</title>
+
+<para>Please keep in mind that there are a few particular file formats
+that are very dependent on the specific use of tab and/or space
+characters. <command>cleantxt</command> is blissfully unaware of these
+issues and will not warn you if the input file happens to pertain to one
+of the following scenarios:</para>
+
+<itemizedlist>
+
+<listitem><para>The UNIX <command>make</command> utility requires an
+explicit tab character at the very start of each line that defines a
+shell command sequence to run when building a target. You should only
+run <command>cleantxt</command> with the <option>-r</option> option on
+Makefiles.</para></listitem>
+
+<listitem><para>The Python programming language is very strict on the
+use of whitespace for indentation:
+<itemizedlist>
+<listitem><para> Python uses the level of indentation as a means of
+delimiting statements in control structures and function
+definitions.</para></listitem>
+<listitem><para>Python always assumes tab stops are 8 columns apart;
+mixing and matching tabs and spaces in Python source code can cause
+syntax errors if you run <command>cleantxt</command> with a different
+value for the <option>-t</option> option. The PEP-8 style guide forbids
+intermixing of tabs and spaces in Python version 3
+programs.</para></listitem>
+</itemizedlist>
+</para></listitem>
+
+<listitem><para>The standard Microsoft Windows Notepad text editor, for
+versions up until at least Windows XP (possibly later) fails to
+recognise text files with UNIX-style LF-only (ASCII 10) line endings,
+and will display such files with the text all concatenated on the one
+line, or stair-stepped diagonally downwards to the right.</para>
+
+<para>Use the <option>-c</option> option of <command>cleantxt</command>
+to replace the line endings with CR+LF (ASCII 10+13) sequences instead,
+should you ever later need to edit such text files on Microsoft Windows.
+Some third-party Windows-based text editors however do tolerate and/or
+support opening/saving files with LF line-endings.</para>
+
+<para>On the other hand, most UNIX applications happily tolerate CR+LF
+line endings in text configuration and input files, although some text
+editors may display a spurious <literal>^M</literal> sequence at the end
+of each line, or may require the cursor to be advanced an extra step to
+transition from the end of one line to the start of the next.</para>
+</listitem>
+
+<listitem>
+<para>Lastly, the esoteric <ulink
+url="http://compsoc.dur.ac.uk/whitespace/">Whitespace programming
+language</ulink> is entirely dependent on the precise sequence and
+positioning of tab, space and newline characters, hence its name.
+<command>cleantxt</command> will happily obliterate the content of any
+Whitespace source file that is fed as input. Although if you're using
+that language to perform anything serious, I think that will be the
+least of your worries...</para>
+</listitem>
+
+</itemizedlist>
+</refsect1>
+
+<refsect1>
+<title>BUGS</title>
+
+<para>Currently <command>cleantxt</command> does not support 16-bit
+Unicode at all, and does not properly support the UTF-8 character set.
+It assumes all input files are either 7-bit ASCII or 8-bit
+ISO-8859.</para>
+
+<para>Multi-byte UTF-8 character sequences are currently preserved, but
+upset the computation of tab-stops for the remainder of the line, since
+the code mistakes such characters as taking up 2 or 3 columns.</para>
+
+<para>Unicode and UTF-8 support will be added soon to a future version
+of <command>cleantxt</command>. Command-line options are proposed to
+allow the end-user to specify the input and output character sets, and
+to attempt auto-detection of the input character if possible.</para>
+
+</refsect1>
+
+<refsect1>
+<title>HISTORICAL NOTES</title>
+
+<para>Some legacy MS-DOS applications and programming
+languages/environments (such as Microsoft GW-BASIC and IBM BASIC) would
+typically append a control-Z character when closing a text file that was
+being written to. These BASIC environments would also signal end-of-file
+to the program if a control-Z character was encountered when reading
+input from a text file.</para>
+
+<para>The MS-DOS <command>type</command> command (somewhat analogous to
+the UNIX <command>cat</command> command) also stops printing a file when
+a control-Z sequence is used.</para>
+
+<para>The MS-DOS <command>copy</command> command when used to
+concatenate files also distinguishes between ASCII text and binary
+files; in the former mode it will use control-Z characters to determine
+and mark the end-of-file.</para>
+
+</refsect1>
+
+<refsect1>
+<title>COPYRIGHT</title>
+
+<para><command>cleantxt</command> is Copyright (C) 1999-2013 Bryan
+Rodgers. <email>rodgersb at it dot net dot au</email></para>
+
+<para><command>cleantxt</command> is free software: you can redistribute
+it and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either version
+3 of the License, or (at your option) any later version.</para>
+
+<para><command>cleantxt</command> is distributed in the hope that it
+will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.</para>
+
+<para>You should have received a copy of the GNU General Public License
+along with this program. If not, see <ulink
+url="http://www.gnu.org/licenses/"></ulink>.</para>
+
+<para>The <command>cleantxt</command> source code is hosted online at
+<ulink url="https://github.com/rodgersb/cleantxt"></ulink>.</para>
+
+</refsect1>
+
+</refentry>

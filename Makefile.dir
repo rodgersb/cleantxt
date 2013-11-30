@@ -1,0 +1,39 @@
+# This makefile fragment contains commands to build source code in this
+# directory only. Please don't invoke this makefile directly; you need
+# to either run the Makefile.djg or Makefile.lnx makefiles depending on
+# your host platform in this project's root directory.
+
+# Relative path to top-level directory
+TOPDIR=.
+
+# List of source files that need to be compiled into a library for the
+# current directory.
+LIBSRCS=cleanstr.c filemgmt.c options.c procfile.c streamio.c
+
+# Source file that need to be compiled as part of the main
+# program executable.
+MAINSRC=main.c
+
+# Library that needs to be built in this directory
+LIB=cleantxt.a
+
+# List of static libraries that the program must be linked against
+LDLIBS=cleantxt.a compat/compat.a
+
+# List of subdirectories that must be recursed into
+SUBDIRS=compat
+
+include $(TOPDIR)/Makefile.rul
+
+# Due to problems I was experiencing with using a MS-DOS for-loop to
+# implement makefile recursion on DJGPP (for some reason the loop was
+# not being executed properly), these two targets have been hard-coded
+# manually and need to be defined for each directory in the project. If
+# a subdirectory has no further child directories, then these targets
+# should have no commands under them.
+
+build-recursive:
+	$(MAKE) $(MFLAGS) -C compat -f Makefile.dir build
+
+clean-recursive:
+	$(MAKE) $(MFLAGS) -C compat -f Makefile.dir clean

@@ -1,0 +1,40 @@
+# Use this makefile under Linux if you don't want to run the GNU
+# Autoconf configure script for some reason. You may need to edit the
+# following definitions below to suit your system's C compiler setup.
+
+# Executable extension needed on this platform
+EXEEXT=
+
+# If using MS-DOS command line, set this variable to 1. This ensures
+# that the makefiles only use command line constructs compatible with
+# MS-DOS's COMMAND.COM interpreter.
+MSDOS=0
+
+# CC: Invocation name of C compiler
+# CFLAGS: Additional flags to pass to the C compiler
+# CPPFLAGS: Arguments to pass to C pre-processor
+# LDFLAGS: Additional flags to pass to the linker
+# AR: Invocation name of library archiver
+# ARFLAGS: Additional flags to use for library archiver
+# DB: Invocation name of debugger
+# RM: Name of delete command
+# RM_RF: Name of command to delete a whole directory recursively
+CC=gcc
+CFLAGS=-g -Wall -Wpedantic -Wextra -Werror -std=c90
+CPPFLAGS=-I$(TOPDIR) \
+    -D_GNU_SOURCE \
+    -DHAVE_GETOPT_H \
+    -DHAVE_ERROR_H \
+    -DHAVE_LIBGEN_H \
+    -DHAVE_GETOPT_LONG \
+    -DHAVE_ERROR \
+    -DHAVE_PROGRAM_INVOCATION_SHORT_NAME
+LDFLAGS=
+AR=ar
+ARFLAGS=
+DB=gdb
+RM=rm -f
+RM_RF=rm -rf
+
+include Makefile.pkg
+include Makefile.dir

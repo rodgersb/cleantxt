@@ -1,0 +1,62 @@
+# Common rules for the manually-written makefiles.
+# Note that this file is not used when building with GNU automake.
+
+# Default target to make if none specified
+.DEFAULT: build
+
+# LIBOBJS: List of object module files for a library in this directory
+# MAINOBJS: List of object module files for the main executable
+# DEPS: List of dependency files for all source files in this directory
+LIBOBJS=$(LIBSRCS:.c=.o)
+MAINOBJ=$(MAINSRC:.c=.o)
+DEPS=$(LIBSRCS:.c=.d) $(MAINSRC:.c=.d)
+
+# List of makefile target names that don't correspond to filenames
+.PHONY: all build clean debug doxygen \
+    build-recursive clean-recursive
+
+# Builds the program
+build: build-recursive $(LIB) $(MAINEXEC)
+
+# Generating header dependency files for Make
+%.d: %.c
+	$(CC) $(CPPFLAGS) -M $< >$@
+
+# Includes dependency files (if present, not needed on initial build)
+-include $(DEPS)
+
+# Compiles source files into object module files
+$(LIBOBJS): %.o: %.c %.d
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+$(MAINOBJ): %.o: %.c %.d
+	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" $(CPPFLAGS) -c $<
+
+# Build a library archive from the object module files
+$(LIB): $(LIBOBJS)
+	$(AR) $(ARFLAGS) rc $@ $?
+
+# Links the program executable
+$(MAINEXEC): $(MAINOBJ) $(LDLIBS)
+	$(CC) -o $(MAINEXEC) $(MAINOBJ) $(LDLIBS) $(LDFLAGS)
+
+# Debugs the program executable
+debug: $(MAINEXEC)
+	$(DB) $(MAINEXEC)
+
+# Generates Doxygen documentation
+doxygen:
+	doxygen
+
+# Removes all derived files in current directory
+clean: clean-recursive
+ifeq ($(MSDOS),1)
+	-for %f in ($(LIBOBJS)) do $(RM) %f
+	-for %f in ($(DEPS)) do $(RM) %f
+	-for %f in ($(MAINEXEC) $(MAINOBJ) $(LIB)) do $(RM) %f
+else
+	-$(RM) $(MAINEXEC) $(MAINOBJ) $(LIBOBJS) $(DEPS) $(LIB) core
+endif
+	-$(RM_RF) doxygen
+
+# Export the following variables to recursive invocations of make
+export CC CFLAGS CPPFLAGS LDFLAGS AR ARFLAGS DB RM RM_RF MSDOS

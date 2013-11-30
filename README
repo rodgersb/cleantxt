@@ -1,0 +1,208 @@
+  ____ _                _____      _
+ / ___| | ___  __ _ _ _|_   _|_  _| |_
+| |   | |/ _ \/ _` | '_ \| | \ \/ / __|
+| |___| |  __/ (_| | | | | |  >  <| |_
+ \____|_|\___|\__,_|_| |_|_| /_/\_\\__|
+
+------------------------------------------------------------------------
+CleanTxt v1.0.1
+Copyright (C) 1999-2013 Bryan Rodgers <rodgersb at it dot net dot au>
+Released to the public under GNU GPL
+<https://github.com/rodgersb/cleantxt>
+
+PROGRAM DOCUMENTATION (README file)
+------------------------------------------------------------------------
+
+*** TABLE OF CONTENTS ***
+
+[1] Brief introduction
+[2] Compiling and installing
+[3] Using the program
+[4] Known issues
+[5] Future planned features
+[6] License / credits / contributions / contacting the author
+
+------------------------------------------------------------------------
+
+[1] Brief introduction
+
+CleanTxt is a command-line utility that cleans up formatting issues in
+text files. In particular it was designed to:
+
+ * Address conversion between different line ending sequences
+   e.g. LF (UNIX-like), CR+LF (DOS/MS-Windows) or CR (Apple MacOS classic)
+
+ * Change indenting between using hard-tab characters or spaces, and adjust
+   the distance between tab stops.
+
+ * Removes excess trailing whitespace and blank lines, making minor
+   storage savings and reducing noise in the output of diff-like utilities.
+
+ * Ensures the final line ends in a newline, which avoids problems with
+   some UNIX utilities and triggering warnings in ANSI C compilers.
+
+ * Addresses the ctrl-Z character, which on some platforms signifies
+   end-of-file.
+
+While most Linux distributions over the last decade provide multiple
+utilities (such as expand, dos2unix/unix2dos) that do similar thing,
+CleanTxt condenses all this functionality into one minimal command-line
+program and also operates on files in-place, reducing the complexity of
+repetitive invocations.
+
+------------------------------------------------------------------------
+
+[2] Compiling and installing
+
+CleanTxt is written in ISO C90-conforming C, and is designed to work
+under any POSIX-like environment. It has been tested under Linux w/ GNU
+libc and also with DJGPP v2.x running under MS-DOS v6.22.
+
+There are two ways to build the source code:
+
+a) Use the GNU Autoconf script.
+
+   If you have a POSIX-compatible operating system, type:
+
+        $ ./configure
+        $ make
+
+   Then, as root, if you want to install the program system-wide:
+
+        # make install
+
+   Usual GNU Autoconf conventions apply; i.e. you can type `./configure
+   --help' to see a list of compile-time configuration options.
+
+b) Use the manually-written makefiles.
+
+   Linux (or other UNIX-like OS):    Makefile.lnx
+   DJGPP under MS-DOS:               Makefile.djg
+
+   It's recommended you review and/or edit the respective makefile first
+   to ensure it reflects your system's compiler and environment. Then
+   invoke the makefile with the following command;
+
+   under Linux:         make -f Makefile.lnx
+   under DJGPP:         make -f Makefile.djg
+
+I have yet to test building CleanTxt under Microsoft Windows with the
+MinGW compiler, since I no longer use Windows any more, this
+unfortunately will take a low priority. Contributions and reports from
+other users are welcome.
+
+You may be able to get away with using the DJGPP makefile. The DJGPP
+build will happily work under 32-bit Windows OSes in the meantime, but
+as 64-bit Windows versions have abandoned native support for DOS
+applications, you may need to try Cygwin instead.
+
+If you've downloaded a pre-compiled binary of CleanTxt, just place it
+somewhere in your system path. There are no dependent files or
+hard-coded filesystem locations involved.
+
+------------------------------------------------------------------------
+
+[3] Using the program
+
+A good explanation of how to use the program is available on the written
+man page, and a brief summary is available through typing
+
+    $ cleantxt --help
+
+Some brief examples. Note that all these options can be combined into a
+single invocation.
+
+* To convert all line-endings in a text file to UNIX-style LF (ASCII 10):
+
+    $ cleantxt -l myfile1.txt myfile2.txt myfile3.txt ...
+
+  Note the `-l' is assumed by default if CleanTxt was built on a
+  UNIX-like system.
+
+* To convert all line-endings to DOS/MS-Windows style CR+LF (ASCII 13+10):
+
+    $ cleantxt -c myfile1.txt myfile2.txt myfile3.txt ...
+
+  Note the `-c' is assumed by default if CleanTxt was built on MS-DOS or
+  Microsoft Windows.
+
+* To expand all hard-tab characters (ASCII 9) into spaces (A
+
+    $ cleantxt -s -t8 source1.c source2.c source3.c ...
+
+  The -s option is implied by default. The -t8 specifies the interval of
+  the tab stops; 8 is the default value, but any size can be used.
+
+* To collapse spaces into hard-tab characters wherever possible:
+
+    $ cleantxt -r -t8 source1.c source2.c source3.c ...
+
+If CleanTxt is invoked without any files given on the command line, it
+acts like a UNIX-style filter program, reading from standard input and
+writing to standard output, so you can use it in shell pipe operations,
+e.g.:
+
+    $ some-application | cleantxt | tee mylog.log
+
+------------------------------------------------------------------------
+
+[4] Known issues
+
+The only outstanding issue at the moment is that CleanTxt currently does
+not support 16-bit Unicode and does not fully handle UTF-8 correctly. It
+naively assumes all input files are either 7-bit ASCII or 8-bit
+ISO-8859. In the case of UTF-8, it will preserve multi-byte characters
+in the output, but incorrectly assume they take up 2-3 columns which
+fouls up tab margin calculations for the rest of the line.
+
+This issue will be addressed soon in the next release.
+
+If you discover any other bugs in CleanTxt, feel free to report them.
+Please ensure that your report contains the following, to ensure that I
+have the best chance of reproducing the bug:
+
+    * Your system's hardware and operating system configuration
+    * Compiler that you compiled CleanTxt with, if built from source.
+    * Copies of any input/output files relevant to the problem.
+    * A description of what you were trying to do, and what you were
+      expecting to happen.
+
+------------------------------------------------------------------------
+
+[5] Future planned features
+
+See the TODO file for a brainstorm of future planned features for
+CleanTxt.
+
+------------------------------------------------------------------------
+
+[6] License / credits / contributions / contacting the author
+
+CleanTxt is licensed under the GNU General Public License, version 3.
+The full license text is available in the file "COPYING", but in
+layman's terms:
+
+* You may freely distribute unmodified copies of CleanTxt to anyone at
+  any cost.
+* You may distribute modified binary versions of CleanTxt to anyone at
+  any cost, on the condition you make copies of the corresponding
+  modified source code available to the recipients of these modified
+  binary copies.
+* If you integrate source code from CleanTxt into your own work of
+  software, or write software that links directly with CleanTxt object
+  code, then the resulting aggregate work may only be distributed under
+  the terms of the GPL.
+
+All work on CleanTxt done by Bryan Rodgers, unless otherwise stated.
+
+I can be contacted at <rodgersb at it dot net dot au>.
+
+Suggestions, feedback or code contributions are welcome.
+
+If you're interested in helping out with development/maintenance and
+want your changes integrated into baseline, then check the TODO file for
+the future planned functionality roadmap.
+
+------------------------------------------------------------------------
+
+*** END OF README ***

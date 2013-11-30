@@ -1,0 +1,10 @@
+# This makefile fragment contains versioning information about the
+# program itself. Please don't invoke this makefile directly; you need
+# to either run the Makefile.djg or Makefile.lnx makefiles depending on
+# your host platform in this project's root directory.
+
+# Package version
+VERSION=1.0.1
+
+# Name of main program executable
+MAINEXEC=cleantxt$(EXEEXT)

@@ -1,0 +1,19 @@
+CleanTxt version change history
+===============================
+
+Version 1.0.1  (30/11/2013)
+---------------------------
+
+This is actually a formal packaging-together of the program, of which I
+originally wrote 14 years ago. I've refactored the code, added unit test
+suites (so I can improve future functionality and still ensure that the
+program won't corrupt data) and written proper documentation.
+
+I originally wrote CleanTxt as a Turbo Pascal program back in 1999 (when
+I was still using MS-DOS/Windows 9x). In 2001, after moving to Linux, I
+ported it to Free Pascal, then in 2003 rewrote it in C (as an exercise
+for learning GNU Autotools).
+
+Prior to being hosted on GitHub (this is also a means of giving me a
+chance to acquaint and evaluate GitHub),  I either usually just gave out
+copies of CleanTxt to work colleagues or other people informally.

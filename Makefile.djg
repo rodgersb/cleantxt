@@ -1,0 +1,32 @@
+# Use this makefile when compiling with DJGPP under MS-DOS. Edit it as
+# needed to reflect the name and/or path of your installation.
+
+# Executable extension needed on this platform
+EXEEXT=.exe
+
+# If using MS-DOS command line, set this variable to 1. This ensures
+# that the makefiles only use command line constructs compatible with
+# MS-DOS's COMMAND.COM interpreter.
+MSDOS=1
+
+# CC: Invocation name of C compiler
+# CFLAGS: Additional flags to pass to the C compiler
+# DEFS: Arguments to pass to C pre-processor
+# LDFLAGS: Additional flags to pass to the linker
+# AR: Invocation name of library archiver
+# ARFLAGS: Additional flags to use for library archiver
+# DB: Invocation name of debugger
+# RM: Name of delete command
+# RM_RF: Name of command to delete a whole directory recursively
+CC=gcc
+CFLAGS=-g
+CPPFLAGS=-I$(TOPDIR) -DDEFAULT_EOL_MODE=EM_CRLF
+LDFLAGS=
+AR=ar
+ARFLAGS=
+DB=gdb
+RM=del
+RM_RF=deltree /Y
+
+include Makefile.pkg
+include Makefile.dir

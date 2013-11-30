@@ -1,0 +1,24 @@
+# Contains makefile commands to build source code in this directory
+# only. Please don't invoke this makefile directly; you need to either
+# run the Makefile.djg or Makefile.lnx makefiles depending on your host
+# platform in this project's root directory.
+
+# Relative path to top-level directory
+TOPDIR=..
+
+# List of source files that need to be compiled into a library for the
+# current directory.
+LIBSRCS=error.c goptlong.c progname.c
+
+# Source file that need to be compiled as part of the main
+# program executable.
+MAINSRC=
+
+# Library that needs to be built in this directory
+LIB=compat.a
+
+include $(TOPDIR)/Makefile.rul
+
+build-recursive:
+
+clean-recursive:
