@@ -40,7 +40,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc ChangeLog COPYING README TODO
+%doc Changelog COPYING README TODO
 
 %{_bindir}/cleantxt
 %{_mandir}/man1/cleantxt.1*
