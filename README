@@ -45,7 +45,7 @@ text files. In particular it was designed to:
    end-of-file.
 
 While most Linux distributions over the last decade provide multiple
-utilities (such as expand, dos2unix/unix2dos) that do similar thing,
+utilities (such as expand, dos2unix/unix2dos) that do similar things,
 CleanTxt condenses all this functionality into one minimal command-line
 program and also operates on files in-place, reducing the complexity of
 repetitive invocations.
